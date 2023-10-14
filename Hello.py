@@ -191,7 +191,10 @@ if st.button('Click me to convert your transcript to a deck'):
             # Send a POST request to the Slides.com API
             url = "http://slides.com/decks/define"
             payload = {'definition': assistant_message}
-            response = requests.post(url, data=payload)
+            headers = {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+            response = requests.post(url, data=payload, headers=headers)
             if response.status_code != 200:
                 st.write("There was an error creating your deck. Please try again.")
         else:
