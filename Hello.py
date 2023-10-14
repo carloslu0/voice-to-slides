@@ -16,7 +16,7 @@ def run():
     st.write("# Voice notes to deck mini-app")
 
 
-    uploaded_file = st.file_uploader("Choose a file", type=['mp3', 'wav', 'mp4', 'avi'])
+    uploaded_file = st.file_uploader("Choose a file", type=['mp3', 'wav', 'mp4', 'avi', 'm4a'])
     if uploaded_file is not None:
         # To read file as bytes:
         bytes_data = uploaded_file.getvalue()
