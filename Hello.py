@@ -1,6 +1,7 @@
 import requests
 import streamlit as st
 from streamlit.logger import get_logger
+import os
 import openai
 
 
@@ -36,7 +37,9 @@ if input_type == "I have an audio file":
         # Save the transcription as a variable
         user_message = transcription
 else:
-    user_message = st.text_area("Enter your transcript here")
+    user_message = st.text_area("Enter your transcript here", key='transcript')
+    if st.button('Submit'):
+        st.experimental_rerun()
 
     # Send a request to GPT4's chat completion endpoint using the transcription as the user message
     # Import OpenAI's GPT-3 library
@@ -175,3 +178,12 @@ else:
     # Extract the assistant's message from the response
     assistant_message = gpt4_response.choices[0].message['content']
     st.write(assistant_message)
+
+    if st.button('Click me to convert your transcript to a deck'):
+        st.write("Converting your transcript to a deck...")
+        # Send a POST request to the Slides.com API
+        url = "http://slides.com/decks/define"
+        payload = {'definition': assistant_message}
+        response = requests.post(url, data=payload)
+        if response.status_code != 200:
+            st.write("There was an error creating your deck. Please try again.")
