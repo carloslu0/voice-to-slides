@@ -175,15 +175,26 @@ else:
         ]
     )
 
+try:
     # Extract the assistant's message from the response
-    assistant_message = gpt4_response.choices[0].message['content']
-    st.write(assistant_message)
+    if user_message.strip():  # Check if user_message is not empty
+        assistant_message = gpt4_response.choices[0].message['content']
+        st.write(assistant_message)
+except NameError:
+    st.write("Please enter your transcript")
 
-    if st.button('Click me to convert your transcript to a deck'):
-        st.write("Converting your transcript to a deck...")
-        # Send a POST request to the Slides.com API
-        url = "http://slides.com/decks/define"
-        payload = {'definition': assistant_message}
-        response = requests.post(url, data=payload)
-        if response.status_code != 200:
-            st.write("There was an error creating your deck. Please try again.")
+# Move the button outside the condition
+if st.button('Click me to convert your transcript to a deck'):
+    try:
+        if assistant_message:
+            st.write("Converting your transcript to a deck...")
+            # Send a POST request to the Slides.com API
+            url = "http://slides.com/decks/define"
+            payload = {'definition': assistant_message}
+            response = requests.post(url, data=payload)
+            if response.status_code != 200:
+                st.write("There was an error creating your deck. Please try again.")
+        else:
+            st.write("Please provide the transcript of the voice notes for their transformation into JSON.")
+    except NameError:
+        st.write("Please enter your transcript")
