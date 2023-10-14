@@ -2,5 +2,5 @@ altair
 numpy
 pandas
 pydeck
-streamlit
 openai
+streamlit
